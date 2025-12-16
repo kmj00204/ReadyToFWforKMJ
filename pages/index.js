@@ -208,62 +208,44 @@ function PostList() {
                 {/* Pagination */}
                 {totalPages > 1 && (
                     <div className="flex justify-center gap-1">
-                        {/* Prev button */}
-                        {currentPage > 1 && (
+                        {currentPage >= 1 && (
                             <button
                                 onClick={() => router.push(`/?page=${currentPage - 1}&tab=${tab}&perPage=${limit}`)}
-                                className="px-4 py-2 rounded text-sm bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                                className={`px-4 py-2 rounded text-sm border border-gray-300 ${currentPage === 1
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                                    }`}
                             >
                                 Prev
                             </button>
                         )}
 
-                        {/* Page 1 */}
+                        {(currentPage !== 1) && (
                         <button
                             onClick={() => router.push(`/?page=1&tab=${tab}&perPage=${limit}`)}
-                            className={`px-3 py-2 rounded text-sm border border-gray-300 ${currentPage === 1
-                                ? 'bg-orange-500 text-white font-medium'
-                                : 'bg-white text-gray-700 hover:bg-gray-100'
-                                }`}
+                                className="px-3 py-2 rounded text-sm border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
                         >
                             1
                         </button>
-
-                        {/* Show page numbers 2-5 */}
-                        {currentPage > 5 && (
-                            <>
+                        )}
+                        {currentPage === 1 && (
                                 <button
-                                    onClick={() => router.push(`/?page=2&tab=${tab}&perPage=${limit}`)}
-                                    className="px-3 py-2 rounded text-sm bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                                className="px-3 py-2 rounded text-sm border border-gray-300 bg-orange-500 text-white font-medium"
                                 >
-                                    2
+                                1
                                 </button>
-                                <button
-                                    onClick={() => router.push(`/?page=3&tab=${tab}&perPage=${limit}`)}
-                                    className="px-3 py-2 rounded text-sm bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
-                                >
-                                    3
-                                </button>
-                                <button
-                                    onClick={() => router.push(`/?page=4&tab=${tab}&perPage=${limit}`)}
-                                    className="px-3 py-2 rounded text-sm bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
-                                >
-                                    4
-                                </button>
-                                <button
-                                    onClick={() => router.push(`/?page=5&tab=${tab}&perPage=${limit}`)}
-                                    className="px-3 py-2 rounded text-sm bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
-                                >
-                                    5
-                                </button>
-                                <span className="px-2 py-2 rounded text-gray-600">...</span>
-                            </>
                         )}
 
-                        {/* Pages 2-5 when currentPage <= 5 */}
-                        {currentPage <= 5 && [...Array(Math.min(4, totalPages - 1))].map((_, i) => {
-                            const pageNum = i + 2;
-                            if (pageNum >= totalPages) return null;
+                        {currentPage > 4 && totalPages > 6 && (
+                                <span className="px-2 py-2 rounded text-gray-600">...</span>
+                        )}
+
+                        {[...Array(totalPages)].map((_, i) => {
+                            const pageNum = i + 1;
+
+                            if (pageNum === 1 || pageNum === totalPages) return null;
+
+                            if (pageNum >= Math.max(2, currentPage - 2) && pageNum <= Math.min(totalPages - 1, currentPage + 2)) {
                             return (
                                 <button
                                     key={pageNum}
@@ -276,36 +258,30 @@ function PostList() {
                                     {pageNum}
                                 </button>
                             );
+                            }
+                            return null;
                         })}
 
-                        {/* Show current page if > 5 */}
-                        {currentPage > 5 && currentPage < totalPages && (
-                            <button
-                                className="px-3 py-2 text-sm bg-orange-500 text-white font-medium border border-orange-500"
-                            >
-                                {currentPage}
-                            </button>
+                        {currentPage < totalPages - 3 && totalPages > 6 && (
+                            <span className="px-2 py-2 rounded text-gray-600">...</span>
                         )}
 
-                        {/* Show dots before last page */}
-                        {currentPage < totalPages - 1 && totalPages > 5 && (
-                            <span className="px-2 py-2 text-gray-600">...</span>
-                        )}
-
-                        {/* Last page */}
-                        {totalPages > 1 && (
+                        {(totalPages > 1 && currentPage !== totalPages) && (
                             <button
                                 onClick={() => router.push(`/?page=${totalPages}&tab=${tab}&perPage=${limit}`)}
-                                className={`px-3 py-2 rounded text-sm border border-gray-300 ${currentPage === totalPages
-                                    ? 'bg-orange-500 text-white font-medium'
-                                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                                    }`}
+                                className="px-3 py-2 rounded text-sm border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+                            >
+                                {totalPages}
+                            </button>
+                        )}
+                        {currentPage === totalPages && totalPages > 1 && (
+                            <button
+                                className="px-3 py-2 rounded text-sm border border-gray-300 bg-orange-500 text-white font-medium"
                             >
                                 {totalPages}
                             </button>
                         )}
 
-                        {/* Next button */}
                         <button
                             onClick={() => router.push(`/?page=${Math.min(totalPages, currentPage + 1)}&tab=${tab}&perPage=${limit}`)}
                             disabled={currentPage === totalPages}
@@ -318,6 +294,7 @@ function PostList() {
                         </button>
                     </div>
                 )}
+
             </div>
         </div>
     );
