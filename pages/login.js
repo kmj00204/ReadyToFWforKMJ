@@ -18,9 +18,8 @@ function Login() {
 
             // 사용자 정보를 로컬 스토리지에 저장 (프론트엔드 상태 관리를 위함)
             localStorage.setItem('user', JSON.stringify(res.data.user));
+            router.back();
 
-            // alert('로그인 성공!');
-            location.href = document.referrer;
         } catch (error) {
             alert(`로그인 실패: ${error.response?.data?.message || '서버 오류'}`);
         } finally {

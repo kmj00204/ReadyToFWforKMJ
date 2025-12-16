@@ -20,7 +20,7 @@ function Layout({ children }) {
                 localStorage.removeItem('user');
             }
         }
-    }, []);
+    }, [router.asPath]);
 
     const handleLogout = async () => {
         try {
