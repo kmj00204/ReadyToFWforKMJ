@@ -27,8 +27,9 @@ function Layout({ children }) {
             await axios.post('/api/auth/logout');
             localStorage.removeItem('user');
             setUser(null);
-            alert('로그아웃되었습니다.');
-            router.push('/login');
+            // alert('로그아웃되었습니다.');
+            // router.push('/');
+            router.reload();
         } catch (error) {
             alert('로그아웃 중 오류가 발생했습니다.');
         }
@@ -52,13 +53,14 @@ function Layout({ children }) {
                 <div className="max-w-screen-2xl mx-auto px-4">
                     <nav className="flex items-center h-14 gap-4">
                         {/* Logo */}
-                        <Link href="/" className="flex items-center gap-2 no-underline">
-                            <div className="bg-orange-500 text-white px-2 py-1 rounded text-sm font-bold">
-                                stack
-                            </div>
-                            <span className="font-bold text-gray-800 hidden sm:inline">overflow</span>
-                        </Link>
-
+                        <div className="hover:bg-gray-200 h-full">
+                            <Link href="/" className="flex items-center gap-2 no-underline h-full">
+                                <div className="bg-orange-500 text-white px-2 py-1 rounded text-sm font-bold">
+                                    stack
+                                </div>
+                                <span className="font-bold text-gray-800 hidden sm:inline">overflow</span>
+                            </Link>
+                        </div>
                         {/* Top Nav Links */}
                         <div className="hidden md:flex items-center gap-2 text-sm">
                             <Link href="/about" className="px-3 py-2 no-underline text-gray-600 hover:bg-gray-100 rounded transition-colors">
@@ -73,7 +75,7 @@ function Layout({ children }) {
                         </div>
 
                         {/* Search Bar */}
-                        <form onSubmit={handleSearch} className="flex-1 max-w-2xl">
+                        <form onSubmit={handleSearch} className="flex-1 max-w-4xl">
                             <div className="relative">
                                 <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
